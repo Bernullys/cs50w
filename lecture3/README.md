@@ -121,3 +121,8 @@ Conditionals:
 To create another app in the same project, it is the same way as before from startapp onwards.
 
 Styling:
+
+If we want to add a CSS file, which is a static file because it doesn’t change, we’ll first create a
+folder called static , then create a newyear folder within that, and then a styles.css file within
+that.
+Then we have to load the folder and link the styles file with django syntax.
