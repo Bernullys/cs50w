@@ -126,3 +126,55 @@ If we want to add a CSS file, which is a static file because it doesn’t change
 folder called static , then create a newyear folder within that, and then a styles.css file within
 that.
 Then we have to load the folder and link the styles file with django syntax.
+
+New project steps: (resume)
+
+    1. run python manage.py startapp tasks in the terminal.
+    2. Edit settings.py , adding “tasks” as one of our INSTALLED_APPS.
+    3. Edit our project’s urls.py file, and include a path similar to the one we created for the
+    hello app:
+    path('tasks/', include("tasks.urls"))
+    4. Create another urls.py file within our new app’s directory, and update it to include a path
+    similar to the index path in hello :
+    from django.urls import path
+    from . import views
+    urlpatterns = [
+    path("", views.index, name="index"),
+    ]
+    5. Create an index function in views.py .
+
+
+Templates inheritance:
+All the html files will inherit from a layout html file using django syntax.
+
+
+Forms:
+
+We need to add a bit more to this form now, because Django requires a token to prevent Cross-Site
+Request Forgery (CSRF) Attack (https://portswigger.net/web-security/csrf). This is an attack where a
+malicious user attempts to send a request to your server from somewhere other than your site. This
+could be a really big problem for some websites. Say, for example, that a banking website has a
+form for one user to transfer money to another one. It would be catastrophic if someone could
+submit a transfer from outside of the bank’s website!
+To solve this problem, when Django sends a response rendering a template, it also provides a CSRF
+token that is unique with each new session on the site. Then, when a request is submitted, Django
+checks to make sure the CSRF token associated with the request matches one that it has recently
+provided. Therefore, if a malicious user on another site attempted to submit a request, they would
+be blocked due to an invalid CSRF token. This CSRF validation is built into the Django Middleware
+(https://docs.djangoproject.com/en/4.0/topics/http/middleware/) framework, which can intervene
+in the request-response processing of a Django app. We won’t go into any more detail about
+Middleware in this course, but do look at the documentation
+(https://docs.djangoproject.com/en/4.0/topics/http/middleware/) if interested!
+
+
+Django Forms:
+
+While we can create forms by writing raw HTML as we’ve just done, Django provides an even easier
+way to collect information from a user: Django Forms
+(https://docs.djangoproject.com/en/4.0/ref/forms/api/).
+
+
+Sessions:
+
+Sessions are a way to store unique data on the server side for each new visit to a website.
+In order to solve this problem we’re going to employ a tool known as sessions. (https://docs.djangoproject.com/en/4.0/topics/http/sessions/).
