@@ -3,8 +3,6 @@ from django import forms
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 
-
-tasks = []
 # Create your views here.
 
 class NewTaskForm(forms.Form):
@@ -12,8 +10,14 @@ class NewTaskForm(forms.Form):
     # priority = forms.IntegerField(label="Priority", min_value=1, max_value=10)
 
 def index(request):
+
+    # Check if there already exists a "tasks" key in our session
+    if "tasks" not in request.session:
+        # If not, create a new list:
+        request.session["tasks"] = []
+
     return render (request, "tasks/index.html", {
-        "tasks": tasks
+        "tasks": request.session["tasks"]
     })
 
 # Add a new task:
@@ -28,7 +32,7 @@ def add(request):
             # Isolate the task from the 'cleaned' version of form data
             task = form.cleaned_data["task"]
             # Add the new task to our list of tasks
-            tasks.append(task)
+            request.session["tasks"] += [task]
             # Redirect user to list of tasks
             # In order to redirect the user after a successful submission, we need to import: reverse and HttpResponseRedirect
             return HttpResponseRedirect(reverse("tasks:index"))
